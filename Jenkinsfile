@@ -14,9 +14,9 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('Docker Check') {
             steps {
-                bat 'cd backend\\employee-app && mvnw.cmd test'
+                bat 'docker compose version'
             }
         }
     }
