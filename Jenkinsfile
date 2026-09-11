@@ -34,7 +34,7 @@ pipeline {
     steps {
         writeFile file: 'pipeline.json', text: '''
 {
-    "buildNumber": 1,
+    "buildNumber": 49,
     "status": "SUCCESS",
     "branch": "main",
     "commitId": "test",
