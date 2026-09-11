@@ -1,11 +1,13 @@
 pipeline {
     agent any
+
     environment {
-    START_TIME = "${System.currentTimeMillis()}"
-    DEPLOYED_BY = "Jenkins"
+        START_TIME = "${System.currentTimeMillis()}"
+        DEPLOYED_BY = "Jenkins"
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -23,33 +25,38 @@ pipeline {
                 bat 'docker compose build'
             }
         }
+
         stage('Deploy') {
             steps {
                 bat 'docker compose up -d'
             }
         }
+
         stage('Health Check') {
             steps {
                 powershell 'Start-Sleep -Seconds 10'
                 bat 'curl -f http://localhost:8081/api/health'
             }
         }
-        stage('Send to Dashboard') {
-    steps {
-        script {
-            def dockerStatus = bat(
-                script: 'docker compose ps --services --filter "status=running"',
-                returnStdout: true
-            ).trim()
 
-            dockerStatus = dockerStatus ? "RUNNING" : "STOPPED"
-        writeFile file: 'pipeline.json', text: """
+        stage('Send to Dashboard') {
+            steps {
+                script {
+
+                    def dockerStatus = bat(
+                        script: 'docker compose ps --services --filter "status=running"',
+                        returnStdout: true
+                    ).trim()
+
+                    dockerStatus = dockerStatus ? "RUNNING" : "STOPPED"
+
+                    writeFile file: 'pipeline.json', text: """
 {
     "buildNumber": ${env.BUILD_NUMBER},
     "status": "${currentBuild.currentResult}",
     "branch": "${env.GIT_BRANCH}",
     "commitId": "${env.GIT_COMMIT}",
-    "buildTime": "${new Date(currentBuild.startTimeInMillis).format('yyyy-MM-dd\'T\'HH:mm:ss')}",
+    "buildTime": "${new Date(currentBuild.startTimeInMillis).format('yyyy-MM-dd\\'T\\'HH:mm:ss')}",
     "duration": ${(System.currentTimeMillis() - START_TIME.toLong()) / 1000},
     "deploymentStatus": "${currentBuild.currentResult}",
     "application": "Employee App",
@@ -61,8 +68,10 @@ pipeline {
     "terraformStatus": "N/A"
 }
 """
-        bat 'curl -X POST http://localhost:8082/api/pipelines -H "Content-Type: application/json" --data-binary "@pipeline.json"'
-    }
-}
+
+                    bat 'curl -X POST http://localhost:8082/api/pipelines -H "Content-Type: application/json" --data-binary "@pipeline.json"'
+                }
+            }
+        }
     }
 }
