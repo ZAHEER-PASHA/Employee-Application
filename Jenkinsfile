@@ -31,13 +31,26 @@ pipeline {
             }
         }
         stage('Send to Dashboard') {
-            steps {
-                bat '''
-                curl -X POST http://localhost:8082/api/pipelines ^
-                -H "Content-Type: application/json" ^
-                -d "{\"buildNumber\":1,\"status\":\"SUCCESS\",\"branch\":\"main\",\"commitId\":\"test\",\"duration\":10,\"deploymentStatus\":\"SUCCESS\",\"application\":\"Employee App\",\"environment\":\"Development\",\"version\":\"v1.0\",\"deployedBy\":\"Jenkins\",\"dockerStatus\":\"RUNNING\",\"serverStatus\":\"HEALTHY\",\"terraformStatus\":\"N/A\"}"
-                '''
-            }
-        }
+    steps {
+        writeFile file: 'pipeline.json', text: '''
+{
+    "buildNumber": 1,
+    "status": "SUCCESS",
+    "branch": "main",
+    "commitId": "test",
+    "duration": 10,
+    "deploymentStatus": "SUCCESS",
+    "application": "Employee App",
+    "environment": "Development",
+    "version": "v1.0",
+    "deployedBy": "Jenkins",
+    "dockerStatus": "RUNNING",
+    "serverStatus": "HEALTHY",
+    "terraformStatus": "N/A"
+}
+'''
+        bat 'curl -X POST http://localhost:8082/api/pipelines -H "Content-Type: application/json" --data-binary "@pipeline.json"'
+    }
+}
     }
 }
