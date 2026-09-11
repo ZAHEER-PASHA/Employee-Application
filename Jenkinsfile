@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+    START_TIME = "${System.currentTimeMillis()}"
+    }
 
     stages {
         stage('Checkout') {
