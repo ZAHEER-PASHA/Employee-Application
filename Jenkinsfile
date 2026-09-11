@@ -41,7 +41,7 @@ pipeline {
     "status": "SUCCESS",
     "branch": "${env.GIT_BRANCH}",
     "commitId": "${env.GIT_COMMIT}",
-    "duration": 10,
+    "duration": ${(System.currentTimeMillis() - START_TIME.toLong()) / 1000},
     "deploymentStatus": "SUCCESS",
     "application": "Employee App",
     "environment": "Development",
