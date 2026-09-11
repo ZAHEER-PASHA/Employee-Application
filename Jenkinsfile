@@ -1,7 +1,15 @@
 pipeline {
+    parameters {
+        choice(
+            name: 'DEPLOY_ENV',
+            choices: ['Development', 'Testing', 'Staging', 'Production'],
+            description: 'Select deployment environment'
+        )
+    }
     agent any
     environment {
     START_TIME = "${System.currentTimeMillis()}"
+    DEPLOYED_BY = "Jenkins"
     }
 
     stages {
@@ -52,9 +60,9 @@ pipeline {
     "duration": ${(System.currentTimeMillis() - START_TIME.toLong()) / 1000},
     "deploymentStatus": "${currentBuild.currentResult}",
     "application": "Employee App",
-    "environment": "Development",
+    "environment": "${params.DEPLOY_ENV}",
     "version": "v1.${env.BUILD_NUMBER}",
-    "deployedBy": "Jenkins",
+    "deployedBy": "${env.DEPLOYED_BY}",
     "dockerStatus": "${dockerStatus}",
     "serverStatus": "HEALTHY",
     "terraformStatus": "N/A"
