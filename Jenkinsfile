@@ -56,7 +56,7 @@ pipeline {
     "status": "${currentBuild.currentResult}",
     "branch": "${env.GIT_BRANCH}",
     "commitId": "${env.GIT_COMMIT}",
-    "buildTime": "${new Date(currentBuild.startTimeInMillis).format('yyyy-MM-dd\\'T\\'HH:mm:ss')}",
+    "buildTime": "${new Date(currentBuild.startTimeInMillis).format("yyyy-MM-dd'T'HH:mm:ss")}",
     "duration": ${(System.currentTimeMillis() - START_TIME.toLong()) / 1000},
     "deploymentStatus": "${currentBuild.currentResult}",
     "application": "Employee App",
