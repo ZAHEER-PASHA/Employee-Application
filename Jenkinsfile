@@ -36,7 +36,7 @@ pipeline {
 {
     "buildNumber": ${env.BUILD_NUMBER},
     "status": "SUCCESS",
-    "branch": "main",
+    "branch": "${env.GIT_BRANCH}",
     "commitId": "test",
     "duration": 10,
     "deploymentStatus": "SUCCESS",
