@@ -26,6 +26,7 @@ pipeline {
         }
         stage('Health Check') {
             steps {
+                bat 'timeout /t 10 /nobreak'
                 bat 'curl -f http://localhost:8081/api/health'
             }
         }
