@@ -14,9 +14,9 @@ pipeline {
             }
         }
 
-        stage('Docker Check') {
+        stage('Docker Build') {
             steps {
-                bat 'docker compose version'
+                bat 'docker compose build'
             }
         }
     }
