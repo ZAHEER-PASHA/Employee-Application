@@ -1,11 +1,4 @@
 pipeline {
-    parameters {
-        choice(
-            name: 'DEPLOY_ENV',
-            choices: ['Development', 'Testing', 'Staging', 'Production'],
-            description: 'Select deployment environment'
-        )
-    }
     agent any
     environment {
     START_TIME = "${System.currentTimeMillis()}"
@@ -60,7 +53,7 @@ pipeline {
     "duration": ${(System.currentTimeMillis() - START_TIME.toLong()) / 1000},
     "deploymentStatus": "${currentBuild.currentResult}",
     "application": "Employee App",
-    "environment": "${params.DEPLOY_ENV}",
+    "environment": "Development",
     "version": "v1.${env.BUILD_NUMBER}",
     "deployedBy": "${env.DEPLOYED_BY}",
     "dockerStatus": "${dockerStatus}",
