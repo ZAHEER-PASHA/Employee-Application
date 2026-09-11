@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Health Check') {
             steps {
-                bat 'timeout /t 10 /nobreak'
+                powershell 'Start-Sleep -Seconds 10'
                 bat 'curl -f http://localhost:8081/api/health'
             }
         }
