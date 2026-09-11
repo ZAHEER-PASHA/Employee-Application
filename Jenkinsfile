@@ -35,6 +35,13 @@ pipeline {
         }
         stage('Send to Dashboard') {
     steps {
+        script {
+            def dockerStatus = bat(
+                script: 'docker compose ps --services --filter "status=running"',
+                returnStdout: true
+            ).trim()
+
+            dockerStatus = dockerStatus ? "RUNNING" : "STOPPED"
         writeFile file: 'pipeline.json', text: """
 {
     "buildNumber": ${env.BUILD_NUMBER},
@@ -48,7 +55,7 @@ pipeline {
     "environment": "Development",
     "version": "v1.${env.BUILD_NUMBER}",
     "deployedBy": "Jenkins",
-    "dockerStatus": "RUNNING",
+    "dockerStatus": "${dockerStatus}",
     "serverStatus": "HEALTHY",
     "terraformStatus": "N/A"
 }
