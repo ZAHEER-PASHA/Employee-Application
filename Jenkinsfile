@@ -38,12 +38,12 @@ pipeline {
         writeFile file: 'pipeline.json', text: """
 {
     "buildNumber": ${env.BUILD_NUMBER},
-    "status": "SUCCESS",
+    "status": "${currentBuild.currentResult}",
     "branch": "${env.GIT_BRANCH}",
     "commitId": "${env.GIT_COMMIT}",
     "buildTime": "${new Date(currentBuild.startTimeInMillis).format('yyyy-MM-dd\'T\'HH:mm:ss')}",
     "duration": ${(System.currentTimeMillis() - START_TIME.toLong()) / 1000},
-    "deploymentStatus": "SUCCESS",
+    "deploymentStatus": "${currentBuild.currentResult}",
     "application": "Employee App",
     "environment": "Development",
     "version": "v1.${env.BUILD_NUMBER}",
