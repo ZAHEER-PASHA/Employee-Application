@@ -32,9 +32,9 @@ pipeline {
         }
         stage('Send to Dashboard') {
     steps {
-        writeFile file: 'pipeline.json', text: '''
+        writeFile file: 'pipeline.json', text: """
 {
-    "buildNumber": 49,
+    "buildNumber": ${env.BUILD_NUMBER},
     "status": "SUCCESS",
     "branch": "main",
     "commitId": "test",
@@ -48,7 +48,7 @@ pipeline {
     "serverStatus": "HEALTHY",
     "terraformStatus": "N/A"
 }
-'''
+"""
         bat 'curl -X POST http://localhost:8082/api/pipelines -H "Content-Type: application/json" --data-binary "@pipeline.json"'
     }
 }
