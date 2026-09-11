@@ -30,5 +30,10 @@ pipeline {
                 bat 'curl -f http://localhost:8081/api/health'
             }
         }
+        stage('Dashboard Connection Test') {
+            steps {
+                bat 'curl -f http://localhost:8082/api/pipelines'
+            }
+        }
     }
 }
