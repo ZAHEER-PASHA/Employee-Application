@@ -80,7 +80,7 @@ pipeline {
     "commitId": "${env.GIT_COMMIT}",
     "buildTime": "${new Date(currentBuild.startTimeInMillis).format("yyyy-MM-dd'T'HH:mm:ss")}",
     "duration": ${(System.currentTimeMillis() - START_TIME.toLong()) / 1000},
-    "deploymentStatus": "${currentBuild.currentResult}",
+    "deploymentStatus": "${env.DEPLOYMENT_STATUS}",
     "application": "Employee App",
     "environment": "Development",
     "version": "v1.${env.BUILD_NUMBER}",
