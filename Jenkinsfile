@@ -64,6 +64,9 @@ pipeline {
     post {
     always {
         script {
+            echo "SERVER_STATUS = ${env.SERVER_STATUS}"
+            echo "DEPLOYMENT_STATUS = ${env.DEPLOYMENT_STATUS}"
+            echo "BUILD_RESULT = ${currentBuild.currentResult}"
 
             def dockerStatus = bat(
                 script: 'docker compose ps --services --filter "status=running"',
