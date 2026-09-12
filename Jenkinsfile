@@ -4,6 +4,7 @@ pipeline {
     environment {
         START_TIME = "${System.currentTimeMillis()}"
         DEPLOYED_BY = "Jenkins"
+        SERVER_STATUS = "UNKNOWN"
     }
 
     stages {
@@ -35,7 +36,16 @@ pipeline {
         stage('Health Check') {
             steps {
                 powershell 'Start-Sleep -Seconds 10'
-                bat 'curl -f http://localhost:8081/api/health'
+
+                script {
+                    try {
+                        bat 'curl -f http://localhost:8081/api/health'
+                        env.SERVER_STATUS = "HEALTHY"
+                    } catch (e) {
+                        env.SERVER_STATUS = "UNHEALTHY"
+                        throw e
+                    }
+                }
             }
         }
 
