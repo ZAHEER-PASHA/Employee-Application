@@ -48,7 +48,7 @@ pipeline {
 
                 script {
                     try {
-                        bat 'curl -f http://localhost:8082/api/health'
+                        bat 'curl -f http://localhost:9999/api/health'
                         env.SERVER_STATUS = "HEALTHY"
                     } catch (e) {
                         env.SERVER_STATUS = "UNHEALTHY"
