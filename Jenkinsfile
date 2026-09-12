@@ -35,7 +35,7 @@ pipeline {
         stage('Health Check') {
             steps {
                 powershell 'Start-Sleep -Seconds 10'
-                bat 'curl -f http://localhost:8082/api/health'
+                bat 'curl -f http://localhost:8081/api/health'
             }
         }
 
