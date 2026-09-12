@@ -73,5 +73,10 @@ pipeline {
                 }
             }
         }
+        post {
+            always {
+                echo "Sending pipeline result to dashboard"
+            }
+        }
     }
 }
