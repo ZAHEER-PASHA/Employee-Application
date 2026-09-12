@@ -86,7 +86,7 @@ pipeline {
     "version": "v1.${env.BUILD_NUMBER}",
     "deployedBy": "${env.DEPLOYED_BY}",
     "dockerStatus": "${dockerStatus}",
-    "serverStatus": "HEALTHY",
+    "serverStatus": "${env.SERVER_STATUS}",
     "terraformStatus": "N/A"
 }
 """
