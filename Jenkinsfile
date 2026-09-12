@@ -5,6 +5,7 @@ pipeline {
         START_TIME = "${System.currentTimeMillis()}"
         DEPLOYED_BY = "Jenkins"
         SERVER_STATUS = "UNKNOWN"
+        DEPLOYMENT_STATUS = "NOT_DEPLOYED"
     }
 
     stages {
@@ -29,8 +30,16 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                bat 'docker compose up -d'
+                script {
+                    try {
+                        bat 'docker compose up -d'
+                        env.DEPLOYMENT_STATUS = "SUCCESS"
+                    } catch (e) {
+                        env.DEPLOYMENT_STATUS = "FAILURE"
+                        throw e
+                }
             }
+        }
         }
 
         stage('Health Check') {
