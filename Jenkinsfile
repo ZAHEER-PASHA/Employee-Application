@@ -47,12 +47,16 @@ pipeline {
                 powershell 'Start-Sleep -Seconds 10'
 
                 script {
-                    try {
-                        bat 'curl -f http://localhost:9999/api/health'
+                    def result = bat(
+                        script: 'curl -f http://localhost:9999/api/health',
+                        returnStatus: true
+                    )
+
+                    if (result == 0) {
                         env.SERVER_STATUS = "HEALTHY"
-                    } catch (e) {
+                    } else {
                         env.SERVER_STATUS = "UNHEALTHY"
-                        throw e
+                        error "Health check failed"
                     }
                 }
             }
