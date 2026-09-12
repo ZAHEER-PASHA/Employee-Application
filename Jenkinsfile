@@ -4,8 +4,7 @@ pipeline {
     environment {
         START_TIME = "${System.currentTimeMillis()}"
         DEPLOYED_BY = "Jenkins"
-        SERVER_STATUS = "UNKNOWN"
-        DEPLOYMENT_STATUS = "NOT_DEPLOYED"
+        
     }
 
     stages {
