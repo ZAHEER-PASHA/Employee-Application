@@ -47,7 +47,7 @@ pipeline {
 
                 script {
                     def result = bat(
-                        script: 'curl -f http://localhost:9999/api/health',
+                        script: 'curl -f http://localhost:8081/api/health',
                         returnStatus: true
                     )
 
