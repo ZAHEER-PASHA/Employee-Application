@@ -39,18 +39,21 @@ pipeline {
             }
         }
 
-        stage('Send to Dashboard') {
-            steps {
-                script {
+        
+        
+    }
+    post {
+    always {
+        script {
 
-                    def dockerStatus = bat(
-                        script: 'docker compose ps --services --filter "status=running"',
-                        returnStdout: true
-                    ).trim()
+            def dockerStatus = bat(
+                script: 'docker compose ps --services --filter "status=running"',
+                returnStdout: true
+            ).trim()
 
-                    dockerStatus = dockerStatus ? "RUNNING" : "STOPPED"
+            dockerStatus = dockerStatus ? "RUNNING" : "STOPPED"
 
-                    writeFile file: 'pipeline.json', text: """
+            writeFile file: 'pipeline.json', text: """
 {
     "buildNumber": ${env.BUILD_NUMBER},
     "status": "${currentBuild.currentResult}",
@@ -69,15 +72,8 @@ pipeline {
 }
 """
 
-                    bat 'curl -X POST http://localhost:8082/api/pipelines -H "Content-Type: application/json" --data-binary "@pipeline.json"'
-                }
-            }
+            bat 'curl -X POST http://localhost:8082/api/pipelines -H "Content-Type: application/json" --data-binary "@pipeline.json"'
         }
-        
     }
-    post {
-            always {
-                echo "Sending pipeline result to dashboard"
-            }
-        }
+}
 }
